@@ -1,0 +1,10 @@
+INSTALLATION
+
+    Source codes are available from: 
+    http://www.columbia.edu/~at541/src
+
+
+    To build, unpack the tar file, then type:
+
+    ./configure
+    make

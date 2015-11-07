@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="newudpl.exe"/>
+    <OBJFILES value="obj\newudpl.obj obj\winsocklib.obj obj\akiramath.obj obj\getopt.obj 
+      obj\gettimeofday.obj obj\host2ip.obj obj\multimer.obj obj\notify.obj 
+      obj\queue.obj obj\uname.obj obj\akiralib.obj"/>
+    <RESFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value="VCL50.lib"/>
+    <PACKAGES value="VCL50.bpi VCLX50.bpi bcbsmp50.bpi QRPT50.bpi VCLDB50.bpi VCLBDE50.bpi 
+      ibsmp50.bpi VCLDBX50.bpi TEEUI50.bpi TEEDB50.bpi TEE50.bpi TEEQR50.bpi 
+      VCLIB50.bpi bcbie50.bpi VCLIE50.bpi INETDB50.bpi INET50.bpi NMFAST50.bpi 
+      dclocx50.bpi bcb2kaxserver50.bpi"/>
+    <PATHCPP value=".;..\..\newudpl"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value=""/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
+    <MAINSOURCE value="newudpl_bcb.bpf"/>
+    <INCLUDEPATH value="..;C:\newudpl\;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..;C:\newudpl\;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+  </MACROS>
+  <OPTIONS>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl50.csm -Hc -w- -Vx -Ve -X- -a8 -b- -k- -vi -tWC -tWM- 
+      -c"/>
+    <PFLAGS value="-N2obj -N0obj -$Y- -$L- -$D- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-Iobj -D&quot;&quot; -ap -Tpe -x -Gn"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0x32.obj $(PACKAGES) $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32i.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1033
+CodePage=1252
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=6
+Item0=..\..\newudpl;C:\newudpl\;$(BCB)\include;$(BCB)\include\vcl
+Item1=..;C:\newudpl\;$(BCB)\include;$(BCB)\include\vcl
+Item2=..\;..\..\newudpl;$(BCB)\include;$(BCB)\include\vcl
+Item3=..;$(BCB)\include;$(BCB)\include\vcl
+Item4=$(BCB)\include;$(BCB)\include\vcl
+Item5=C:\C\P23\AKIRA;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=6
+Item0=..\..\newudpl;C:\newudpl\;$(BCB)\lib\obj;$(BCB)\lib
+Item1=..;C:\newudpl\;$(BCB)\lib\obj;$(BCB)\lib
+Item2=..\;..\..\newudpl;$(BCB)\lib\obj;$(BCB)\lib
+Item3=..;$(BCB)\lib\obj;$(BCB)\lib
+Item4=$(BCB)\lib\obj;$(BCB)\lib
+Item5=C:\C\P23\AKIRA;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=3
+Item0=obj
+Item1=..\..\..\obj
+Item2=obj\
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[Language]
+ActiveLang=
+ProjectLang=
+RootDir=
+  </IDEOPTIONS>
+</PROJECT>

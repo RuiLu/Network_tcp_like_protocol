@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- HTML created by TreePad (http://www.freebyte.com) -->
+<html>
+
+<head>
+	<title>NEWUDPL</title>
+	<META http-equiv="Content-Style-Type" content="text/css">
+	<meta name="author" content="Akira Tsukamoto">
+	<meta name="keywords" content="UDP; UDPL; packet switching; emulate">
+	<meta name="description" content="This emulator receives UDP packets on 
+	a designated port and then delays them, drops some randomly, corrupts the 
+	content, swaps the order and emulates a finite-bandwidth link by queuing 
+	packets.">
+</head>
+
+<body>
+
+<h2>NEWUDPL</h2><br>
+
+<blockquote>
+
+<DL>
+<DT><h3>NAME</h3></DT>
+	<DD> newudpl - Network Emulator With UDP Link<br></DD>
+
+<DT><h3>SYNOPSIS</h3></DT>
+	
+	<DD><KBD>
+	newudpl [-[v|vv]] [-p [recv_port]:[send_port]]<br>
+	<DL><DD>
+	[-i sorce_host[[:|/][port|*]]] [-o dest_host[[:|/]port]]<br>
+	[-s link_speed] [-d delay] [-e Ethernet_speed] [-q queue_buf_size]<br>
+	[-B bit_error_rate] [-L random_packet_loss_rate] [-O out_of_order_rate]<br>
+	<br>
+	</DD></DL>
+	</KBD></DD>
+
+<DT><h3>DESCRIPTION</h3></DT>
+	<DD><p>This is a tool to create various condition of packet switching 
+	behavior artificially for UDP packets.</p>
+
+	<p>The emulator receives UDP packets on a designated port and then delays 
+	them, drops some randomly, corrupts the content, swaps the order of sending 
+	and emulates a finite-bandwidth link by queuing packets.  It should be 
+	useful to examine an efficiency of network protocols or codecs.</p>
+
+<DT><h3>INSTALLATION</h3></DT>
+	<DD>Source codes are available from:<br>
+	<a href="http://www.columbia.edu/~at541/src">
+	http://www.columbia.edu/~at541/src</a><br><br>
+
+	To build, unpack the tar file, then type:<br>
+	<br><KBD>
+	./configure<br>
+	make<br></KBD>
+	<br>
+	I have only tested on SunOS 5.7, 5.8 system and Linux but it should compile 
+	on other Posix-compliant platforms.<br>
+
+<DT><h3>OPTIONS</h3></DT>
+
+<DL>
+<DT><KBD>-v</KBD></DT>
+<DT><KBD>-vv</KBD></DT>
+	<DD>Verbose output.<br>
+	With a single -v, <br>
+	the information of dropping packets by congestion and creating <br>
+	random packet loss/bit error/out of order will be displayed; <br>
+	with a second one, receiving and sending packets will also be shown. <br>
+	<br></DD>
+<DT><KBD>-p receiving port : sending port<br></KBD></DT>
+	<DD>Specifies the binding ip-port for receiving and sending UDP packets. 
+	Otherwise, default values will be used.<br>
+		<DL><DD>
+		Available range: 1024 - 65535 or 0x400 - 0xFFFF<br>
+		Default: receiving 41192, sending 41193<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-s emulating link speed<br></KBD></DT>
+	<DD>Specifies a finite-bandwidth. The speed of Transferring UDP packets 
+	will not exceed this speed.  Unit is in kb/s.<br>
+		<DL><DD>
+		Available range: 1 - 50000(MAX_KBPS)<br>
+		Default: 1000<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-e Ethernet speed<br></KBD></DT>
+	<DD>Specifies a Ethernet speed on the machine. It is used to calculate a 
+	tranmission delay, which makes difference especially when the emulating 
+	link speed is slow.<br>
+		<DL><DD>
+		Available range: 1 for 10M, 2 for 100M, 3 for Gigabit Ethernet<br>
+		Default: 10M(b/s)<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-d delay<br></KBD></DT>
+	<DD>Specifies delay time.  All the packets will have minimum delay.  The 
+	deley for each packet could be varies, depenging on the link speed.<br>
+	For example, -d2 is 2 (sec) and -d1.345678 is 1.345678 (sec).<br>
+		<DL><DD>
+		Available range: 0 - 10(MAX_DELAYSEC) <br>
+		Default: 0<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-q queue-buffer size<br></KBD></DT>
+	<DD>Specifies the size of queueing buffer for receiving packets.  If you 
+	large this number less likly to have congestion packet loss for the same 
+	link speed.<br>
+		<DL><DD>
+		Available range: 1 - 16384 or 0x1 - 0x4000(MAX_QBUFSIZE) <br>
+		Default: 8192<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-i source host [[ : | / ] port | * ]<br></KBD></DT>
+	<DD>Specifies the source host for receiving packets. If the emulater 
+	receives a packet from a different host then the packet will be 
+	rejected. The host name could be either IP number with dotted-decimal 
+	notation (e.g., 128.59.16.8) or the host name (e.g., cs.columbia.edu). 
+	If the port is not sepcified then it will accept only packets from the 
+	the port 41191, default values, with corrsponding source host, but you 
+	could rule out this checking by using '*'.<br>
+		<DL><DD>
+		Default: host - localhost, port 41191<br>
+		Example,<br>
+			<DL><DD><KBD>
+			-i dynamo.cs.columbia.edu/32768<br>
+			-i dynamo.cs.columbia.edu/0x8000<br></KBD>
+			<DT>-> accepts packets only from dynamo.cs.columbia.edu/32768</DT>
+			<DD><KBD>
+			-i diamond.cs.columbia.edu<br></KBD>
+			<DT>-> accepts packets only from diamond.cs.columbia.edu/41191</DT>
+			<DD><KBD>
+			-i 128.59.16.7:* <br></KBD>
+			<DT>-> accepts packets any port from disco.cs.columbia.edu
+			(128.59.16.7)</DT>
+			</DL>
+		</DD></DL>
+	<br></DD>
+<DT><KBD>-o destination host [[ : | / ] port ] <br></KBD></DT>
+ 	<DD>Specifies a destination host for outgoing packets.  <br>
+		<DL><DD>
+		Default: host - localhost, port 41194<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-B bit error rate<br></KBD></DT>
+	<DD>Specifies a rate of genarating bit errors for outgoing packets. 
+	The rate is in 1/100000(BITERRDENOM).<br>
+		<DL><DD>
+		Available range: 1 - 99999(BITERRDENOM - 1) <br>
+		Default: 0<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-L random packet loss rate<br></KBD></DT>
+	<DD>Specifies a rate of genarating random packet loss for outgoing packets. 
+	The rate is in percentage.<br>
+		<DL><DD>
+		Available range: 1 - 99 <br>
+		Default: 0<br></DD>
+		</DL>
+	<br></DD>
+<!--DT><KBD>-C conditional rate of Gilbert packet loss<br></KBD></DT>
+	<DD>Specifies a conditional rate of Gilbert packet loss<br>
+		<DL><DD>
+		Available range: 0.0 - 1.0 <br>
+		Default: 0.0<br></DD>
+		</DL>
+	<br></DD>
+<DT><KBD>-U unconditional rate of Gilbert packet loss<br></KBD></DT>
+	<DD>Specifies a unconditional rate of Gilbert packet loss<br>
+		<DL><DD>
+		Available range: 0.0 - 1.0 <br>
+		Default: 0.0<br></DD>
+		</DL>
+	<br></DD-->
+<DT><KBD>-O out of order rate<br></KBD></DT>
+	<DD>Specifies a rate of randomizing oreder of packets.  The distination host 
+	will receive some packets in out of order in certain rate.
+	The rate is in percentage.<br>
+		<DL><DD>
+		Available range: 1 - 99 <br>
+		Default: 0<br></DD>
+		</DL>
+	<br></DD>
+</dl>
+
+<DT><h3>USAGE</h3></DT>
+	<DL>
+	<DT>To create condition under following parameters,</DT>
+		<DD>
+		from: dynamo.cs.columbia.edu(128.59.16.4)/41191<br>
+		to:   disco.cs.columbia.edu(128.59.16.7)/41194<br>
+		link speed : 50(kb/s)<br>
+		delay      : 2.004000(sec)<br>
+	<DT>type,</DT>
+		<DD>
+		<KBD>newudpl -idynamo.cs.columbia.edu -odisco.cs.columbia.edu -s50 
+		-d2.004</KBD><br>
+		<br>
+	<DT>For,</DT>
+		<DD>
+		verbose mode<br>
+		from: any port of dynamo.cs.columbia.edu(128.59.16.4)<br>
+		to:   disco.cs.columbia.edu(128.59.16.7)/32768<br>
+		with error rate<br>
+		<DL><DD>
+		<table>
+			<tr>
+			<td>random packet loss</td><td>:</td><td>7(1/100 per packet)</td>
+			</tr>
+			<tr>
+			<td>bit error         </td><td>:</td><td>5(1/100000 per bit)</td>
+			</tr>
+			<tr>
+			<td>out of order      </td><td>:</td><td>9(1/100 per packet)</td>
+			</tr>
+		</table>
+		</DL>
+	<DT>type,</DT>
+		<DD>
+		<KBD>newudpl -idynamo.cs.columbia.edu/* -odisco.cs.columbia.edu:0x8000 -v 
+		-L7 -B5 -O9</KBD><br>
+		<br>
+	<DT>To stop the emulator,</DT>
+		<DD><ul>
+			<li>press ctr-c
+			<li>type any <KBD>'q' 'quit' 'stop' 'exit'</KBD> from the console.
+		</ul>
+	</DL>
+
+<DT><h3>HISTORY</h3></DT>
+	<DD><a href="ChangeLog.html">ChangeLog.html</a></DD>
+
+<DT><h3>AUTHUR</h3></DT>
+	<DD>Akira Tsukamoto<br>
+	at541@columbia.edu<br>
+	<br></DD>
+
+<DT><h3>ACKNOWLEDGEMENTS</h3></DT>
+	<DD>
+	<p>For genarating a random variable corresponding to binomial distribution
+	, I used the  bnldev() function from <br>
+	William H. Press,  Brian P. Flannery,  Saul A. Teukolsky,  William T. 
+	Vetterling, 'Numerical Recipes in C' The Press Syndicate of the University 
+	of Cambridge, 1992.</p>
+
+	<p>This emulator was developed under supervising by,<br>
+	Wenyu Jiang	<a href="http://www.cs.columbia.edu/~wenyu/">
+	http://www.cs.columbia.edu/~wenyu/</a><br>
+	Henning Schulzrinne	<a href="http://www.cs.columbia.edu/~hgs">
+	http://www.cs.columbia.edu/~hgs/</a></p>
+
+	<p>I referred many codes in rtptools to understand the multitimer function.
+	<br><a href="http://www.cs.columbia.edu/IRT/software/rtptools/">
+	http://www.cs.columbia.edu/IRT/software/rtptools/</a></p>
+
+	<p>Tetsu Iwama, He is good at math and taught me the rejection method.<br>
+	Manager, Credit Risk Trading, Derivative Products Division, 
+	The Fuji Bank Limited, Mizuho Financial Group</p>
+
+	<p>Kuniyoshi Murata, He corrected my many English mistakes.<br>
+	English-Japanese Interpreter
+	<a href="mailto:kuni@ej-interpreter.net">
+	mailto:kuni@ej-interpreter.net</a><br>
+	Macintosh Webcast Specialist
+	<a href="http://www.macwebcaster.com">http://www.macwebcaster.com</a></p>
+	</DD>
+
+<DT><h3>COPYRIGHT</h3></DT>
+	<DD>Copyright (C) 2001 by Columbia University; all rights reserved <br>
+	<br>
+	Permission to use, copy, modify, and distribute this software and its 
+	documentation for not-for-profit research and educational purposes and 
+	without fee is hereby granted, provided that the above copyright notice 
+	appear in all copies and that both that the copyright notice and warranty 
+	disclaimer appear in supporting documentation, and that the names of the 
+	copyright holders or any of their entities not be used in advertising or 
+	publicity pertaining to distribution of the software without specific, 
+	written prior permission. Use of this software in whole or in parts for 
+	commercial advantage and by for-profit organizations requires a license. 
+	<br>
+	<br>
+	The copyright holders disclaim all warranties with regard to this software,
+	including all implied warranties of merchantability and fitness. In no 
+	event shall the copyright holders be liable for any special, indirect or 
+	consequential damages or any damages whatsoever resulting from loss of use,
+	data or profits, whether in an action of contract, negligence or other 
+	tortuous action, arising out of or in connection with the use or 
+	performance of this software. <br>
+	<br></DD>
+
+</DL>
+
+</blockquote>
+
+<hr>
+Last updated:  2001-12-12 by Akira Tsukamoto</a>
+
+</body>
+
+</html>

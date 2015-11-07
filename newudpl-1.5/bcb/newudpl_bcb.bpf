@@ -1,0 +1,15 @@
+USEUNIT("..\newudpl.c");
+USEUNIT("..\winsocklib.c");
+USEUNIT("..\akiramath.c");
+USEUNIT("..\getopt.c");
+USEUNIT("..\gettimeofday.c");
+USEUNIT("..\host2ip.c");
+USEUNIT("..\multimer.c");
+USEUNIT("..\notify.c");
+USEUNIT("..\queue.c");
+USEUNIT("..\uname.c");
+USEUNIT("..\akiralib.c");
+//---------------------------------------------------------------------------
+This file is used by the project manager only and should be treated like the project file
+
+main

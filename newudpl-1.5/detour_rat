@@ -1,0 +1,51 @@
+#!/usr/bin/perl
+#
+# This is a helper script to launch newudpls between two rat
+#
+# Usage:
+#   ./detour_rat  host_a port_a  host_b port_b  options_for_newudpl
+#
+#  "port_a" and "port_b" must not overlap
+#
+#  e.g.
+#
+#  diamond: ./detour_rat dynasty.cs 2000 disco.cs 3000 -s500 -d0.5
+#
+#  dynasty: rat diamond/3000
+#
+#  disco  : rat diamond/2000
+
+$host_a = shift @ARGV;
+$port_a = shift @ARGV;
+$port_aa = $port_a + 1;
+$host_b = shift @ARGV;
+$port_b = shift @ARGV;
+$port_bb = $port_b + 1;
+print "@ARGV \n";
+
+$pid1=fork();
+if ($pid1==0) {
+    exec("./newudpl -i $host_a/* -p $port_b:40000 -o $host_b/$port_a @ARGV > 1.newudpl.log");
+}
+$pid2=fork();
+if ($pid2==0) {
+    exec("./newudpl -i $host_a/* -p $port_bb:40001 -o $host_b/$port_aa @ARGV > 2.newudpl.log");
+}
+$pid3=fork();
+if ($pid3==0) {
+    exec("./newudpl -i $host_b/* -p $port_a:40002 -o $host_a/$port_b @ARGV > 3.newudpl.log");
+}
+$pid4=fork();
+if ($pid4==0) {
+    exec("./newudpl -i $host_b/* -p $port_aa:40003 -o $host_a/$port_bb @ARGV > 4.newudpl.log");
+}
+
+print "./newudpl -i $host_a/* -p $port_b:40000 -o $host_b/$port_a @ARGV > 1.newudpl.log\n";
+print "./newudpl -i $host_a/* -p $port_bb:40001 -o $host_b/$port_aa @ARGV > 2.newudpl.log\n";
+print "./newudpl -i $host_b/* -p $port_a:40002 -o $host_a/$port_b @ARGV > 3.newudpl.log\n";
+print "./newudpl -i $host_b/* -p $port_aa:40003 -o $host_a/$port_bb @ARGV > 4.newudpl.log\n";
+print "\nhit any key to stop.\n";
+getc(STDIN);
+kill 2,-$$;
+
+exit 0;
